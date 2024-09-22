@@ -1,0 +1,10 @@
+/* Optional: Custom styles for the student list */
+.progress {
+    height: 20px;
+  }
+  
+  .progress-bar {
+    font-size: 12px;
+    line-height: 20px;
+  }
+  

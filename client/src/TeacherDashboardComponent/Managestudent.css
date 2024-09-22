@@ -1,0 +1,6 @@
+.avatar {
+    height: 3rem !important;
+    width: 3rem  !important;
+    position: relative !important;
+    display: inline-block !important;
+  }

@@ -1,0 +1,22 @@
+.Box-margin{
+  margin-left: 19rem;
+  margin-top: 5rem;
+}
+.nav-margin-bottom{
+  margin-bottom: 10rem;
+  margin-left: 19rem;
+  position: fixed;
+  top: 0;
+}
+
+.btn-success-soft {
+  color: #0cbc87 !important;
+  background-color: rgba(12, 188, 135, 0.1) !important;
+}
+.btn-danger-soft {
+  color: #d6293e;
+  background-color: rgba(214, 41, 62, 0.1);
+}
+
+
+  

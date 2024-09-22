@@ -1,0 +1,30 @@
+.navbar-header {
+    padding: 0 30px !important;
+}
+@media screen and (max-width: 991.5px) {
+    .topbar_open .navbar-header {
+        transform: translate3d(0, 0px, 0) !important;
+        background: #fff;
+    }
+}
+.btn-view-profile{
+    font-size: x-small !important;
+}
+.btn-view-profile:hover{
+   color: white !important;
+}
+.course-nav-bg{
+    background: radial-gradient(
+        circle,
+        rgba(2, 24, 134, 1) 0%,
+        rgba(162, 3, 35, 1) 99%
+      );
+}
+.course-search-height{
+    height: 30px !important;
+}
+@media screen and (max-width: 991.5px) {
+    .course-navbar-header {
+        transform: none !important;
+    }
+}
