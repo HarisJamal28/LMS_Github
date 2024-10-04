@@ -3,21 +3,36 @@ import { MyContext } from "../ContextApi/Context"; // Import your context
 import "./Payment.css";
 import HeaderBanner from "../UserProfile/HeaderBanner";
 import { useLocation, useNavigate } from "react-router-dom";
+import axiosInstance from '../api/axiosConfig';
 
 function Invoice() {
-
-    const context = useContext(MyContext);
-    console.log(context); // Check what the context contains
-    const { clearCart } = context; // Destructure clearCart
+    const { cart } = useContext(MyContext);
     const location = useLocation();
-    const { courseDetails } = location.state || {};
     const navigate = useNavigate();
-    const totalprice = courseDetails.reduce((acc, course) => acc + course.price, 0);
+    
+    const totalprice = Array.isArray(cart) ? cart.reduce((acc, course) => acc + course.price, 0) : 0;
 
-    const displayChallan = () => {
-        console.log("Context before clearing cart:", { clearCart });
-        clearCart(); // Clear the cart
-        navigate('/Courses/ChallanDetails'); // Navigate to the next page
+    const displayChallan = async () => {
+        // Prepare invoice data
+        const invoiceData = {
+            batch: "Batch 1", // Adjust as necessary
+            invoiceNumber: `INV-${Date.now()}`, // Unique invoice number
+            amount: totalprice,
+            courses: cart.map(course => course._id),
+            lastDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // Example: 30 days from now
+        };
+
+        try {
+            const response = await axiosInstance.post('/api/invoices', invoiceData);
+
+            if (response.data.success) {
+                navigate('/Courses/ChallanDetails'); // Navigate to the next page
+            } else {
+                console.error('Error creating invoice:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error creating invoice:', error);
+        }
     };
 
     return (
@@ -37,7 +52,7 @@ function Invoice() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {courseDetails.map((e, index) => (
+                                {cart.map((e, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{e.title}</td>
@@ -109,7 +124,7 @@ function Invoice() {
                                         <button
                                             className="btn btn-primary gen-invice-btn"
                                             data-dismiss="modal"
-                                            onClick={displayChallan}
+                                            onClick={displayChallan} // Call the function to create invoice
                                         >
                                             GENERATE INVOICE
                                         </button>

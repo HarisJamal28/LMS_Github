@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { MyContext } from "././ContextApi/Context";
+import { MyContext, MyProvider } from "././ContextApi/Context";
 import { useState } from "react";
 
 import Login from "./LoginRegistarationComponents/Login";
@@ -30,7 +30,6 @@ import CourseDetails from "./TeacherDashboardComponent/CourseDetails";
 import ScheduleClass from "./TeacherDashboardComponent/ScheduleClass";
 import GradeAssigment from "./TeacherDashboardComponent/GradeAssigment";
 import Setting from "./TeacherDashboardComponent/Setting";
-import TeacherDashboard from "./Pages/TeacherDashboard";
 import TDashboard from "./Pages/TDashboard";
 import Mycourse from "./Pages/Mycourse";
 import Assignment from "./Pages/Assigment";
@@ -38,11 +37,10 @@ import ManageStudent from "./Pages/ManagestudentPage";
 import AdminDashboardpage from './Pages/AdminDashboardpage';
 import ACourses from './Admin/Acourses';
 import AdminDashboard from './Admin/AdminDashboard';
-import Anavbar from './Admin/AnavBar';
-import AsideBar from './Admin/AsideBar';
 import InvoiceDashboard from './Admin/Earnings';
 import InstructorDetail from './Admin/Idetails';
 import InstructorRequests from './Admin/instructor';
+import CreateInstructor from "./Admin/InstructorCreate";
 import AdminSettings from './Admin/Settings';
 import Students from './Admin/TotalStudents';
 import ReviewTable from './Admin/Reviews';
@@ -58,7 +56,7 @@ function App() {
   };
 
   return (
-    <MyContext.Provider value={{ Courses, addCourses, courseCount, updateCourseCount }}>
+    <MyProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -100,6 +98,7 @@ function App() {
           <Route path="/Acourses" element={<ACourses />} />
           <Route path="/Irequest" element={<InstructorRequests />} />
           <Route path="/Idetails" element={<InstructorDetail />} />
+          <Route path="/Iregisteration" element={<CreateInstructor />} />
           <Route path="/Reviews" element={<ReviewTable />} />
           <Route path="/Earnings" element={<InvoiceDashboard />} />
           <Route path="/Settings" element={<AdminSettings />} />
@@ -108,7 +107,7 @@ function App() {
           <Route path="/*" element={<PageNotFound />} />
         </Routes>
       </Router>
-    </MyContext.Provider>
+    </MyProvider>
   );
 }
 

@@ -56,6 +56,9 @@ const ScheduleClass = () => {
 
     <div className="Box-margin">
       <div className="m-3">
+      <br />
+        <br />
+        <br />
       <div className="container my-4">
       <h2>{isEditing ? "Edit Class" : "Schedule a Class"}</h2>
       <form onSubmit={handleSubmit}>

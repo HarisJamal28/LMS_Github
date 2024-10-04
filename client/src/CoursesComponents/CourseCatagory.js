@@ -38,7 +38,7 @@ function CourseCategory() {
 
     return (
         <section>
-            <div className="container">
+            <div className="container" style={{minHeight:'100vh'}}>
                 {/* Title */}
                 <div className="row mb-4">
                     <div className="col-lg-8 mx-auto text-center">

@@ -1,33 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Table, Button, Pagination } from 'react-bootstrap';
-import Navbar from '../LoginRegistarationComponents/Navbar';
 import AsideBar from './AsideBar';
+import Anavbar from '../Admin/AnavBar';
+import axiosInstance from '../api/axiosConfig';
 
 const InvoiceDashboard = () => {
   // Dummy Data for Invoices
 
+  const [invoices, setInvoices] = useState([]);
+  const [totalSales, setTotalSales] = useState(0);
+  const [toBePaid, setToBePaid] = useState(0);
+  const [lifetimeEarnings, setLifetimeEarnings] = useState(0);
 
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      try {
+        const response = await axiosInstance.get('/api/invoices/AdminInvoices');
+        setInvoices(response.data.invoices);
 
-  const invoices = [
-    { id: '#254684', courseName: 'Create a Design System in Figma', date: '29 Aug 2021', paymentMethod: 'Mastercard', amount: '$3,999', status: 'Paid' },
-    { id: '#125464', courseName: 'Sketch from A to Z: for app designer', date: '26 Aug 2021', paymentMethod: 'PayPal', amount: '$4,201', status: 'Paid' },
-    { id: '#123546', courseName: 'The Complete Web Development in python', date: '18 July 2021', paymentMethod: 'PayPal', amount: '$1,032', status: 'Pending' },
-    { id: '#1235698', courseName: 'Deep Learning with React-Native', date: '09 July 2021', paymentMethod: 'Mastercard', amount: '$6,548', status: 'Paid' },
-    { id: '#132456', courseName: 'Microsoft Excel - Excel from Beginner to Advanced', date: '21 June 2021', paymentMethod: 'PayPal', amount: '$2,546', status: 'Pending' },
-    { id: '#145623', courseName: 'Twitter Marketing & Twitter Ads For Beginners', date: '05 June 2021', paymentMethod: 'Mastercard', amount: '$4,258', status: 'Cancel' },
-    { id: '#145632', courseName: 'The Complete Digital Marketing Course - 12 Courses in 1', date: '15 April 2021', paymentMethod: 'PayPal', amount: '$854', status: 'Pending' },
-    { id: '#165423', courseName: 'Create a Design System in Figma', date: '02 Jan 2021', paymentMethod: 'Mastercard', amount: '$965', status: 'Paid' },
-  ];
+        const sales = response.data.invoices.reduce((acc, invoice) => acc + invoice.amount, 0);
+        setTotalSales(sales);
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    };
 
-  const totalSales = 899.95;
-  const toBePaid = 750.35;
-  const lifetimeEarnings = 4882.65;
+    fetchInvoices();
+  }, []);
+
+  console.log(invoices)
+
+  const markAsPaid = async (invoiceId) => {
+    console.log('Updating invoice with ID:', invoiceId);
+    try {
+        const response = await axiosInstance.put('/api/invoices/payinvoice', { id: invoiceId });
+        console.log('Response:', response);
+        if (response.data.success) {
+            setInvoices((prevInvoices) =>
+                prevInvoices.map((invoice) =>
+                    invoice._id === invoiceId ? { ...invoice, status: 'Paid' } : invoice
+                )
+            );
+            alert('DONE');
+        }
+    } catch (error) {
+        alert("Fail");
+        console.error('Error updating invoice status:', error);
+    }
+};
+
 
   return (
     <>
-    <Navbar/>
     <AsideBar/>
-    <div className='Box-margin'>
+    <div className='Box-margin d-flex flex-column'>
+    <Anavbar />
+
       <div className='m-3'>
       <Container fluid className="p-4">
       {/* Earnings Summary Section */}
@@ -77,37 +105,39 @@ const InvoiceDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {invoices.map((invoice, index) => (
-                    <tr key={index}>
-                      <td>{invoice.id}</td>
-                      <td>{invoice.courseName}</td>
-                      <td>{invoice.date}</td>
-                      <td>{invoice.paymentMethod}</td>
-                      <td>{invoice.amount}</td>
-                      <td>
-                        <span
-                          className={`badge ${
-                            invoice.status === 'Paid'
-                              ? 'bg-success'
-                              : invoice.status === 'Pending'
-                              ? 'bg-warning'
-                              : 'bg-danger'
-                          }`}
-                        >
-                          {invoice.status}
-                        </span>
-                      </td>
-                      <td>
-                        <Button variant="outline-primary" size="sm">
-                          <i className="fas fa-download"></i>
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                {invoices.map((invoice, index) => (
+                          <tr key={index}>
+                            <td>{invoice.invoiceNumber}</td>
+                            <td>{invoice.courses.map(course => course.title).join(', ')}</td>
+                            <td>{new Date(invoice.createdAt).toLocaleDateString()}</td>
+                            <td>{invoice.paymentMethod}</td>
+                            <td>${invoice.amount}</td>
+                            <td>
+                              <span
+                                className={`badge ${
+                                  invoice.status === 'Paid'
+                                    ? 'bg-success'
+                                    : invoice.status === 'Pending'
+                                    ? 'bg-warning'
+                                    : 'bg-danger'
+                                }`}
+                              >
+                                {invoice.status}
+                              </span>
+                            </td>
+                            <td className='d-flex gap-2 flex-column'>
+                              <Button variant="outline-primary" size="sm">
+                                <i className="fas fa-download"></i>
+                              </Button>
+                              <Button variant="outline-success" size="sm" onClick={() => markAsPaid(invoice._id)}>
+                                <i className="fas fa-check"></i>
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
                 </tbody>
               </Table>
 
-              {/* Pagination */}
               <Pagination className="justify-content-end">
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>

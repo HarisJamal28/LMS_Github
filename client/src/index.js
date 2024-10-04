@@ -7,9 +7,9 @@ import { MyProvider } from './ContextApi/Context.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MyProvider>
+    {/* <MyProvider> */}
       <App />
-    </MyProvider>
+    {/* </MyProvider> */}
   </React.StrictMode>
 );
 

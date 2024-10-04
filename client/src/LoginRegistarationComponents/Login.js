@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/api/users/login', {
         email,
@@ -17,14 +17,14 @@ function Login() {
       });
       if (response.data.success) {
         const token = response.data.token;
-        localStorage.setItem('token', token); // Save the token
+        localStorage.setItem('token', token);
         const decodedToken = jwtDecode(token);
         const userRole = decodedToken.role;
 
         if (userRole === 'instructor') {
           navigate('/Tdashboardpage'); // INSTRUCTOR
         } else if (userRole === 'admin') {
-          navigate('/Adashboardpage'); // ADMIN
+          navigate('/Adashboard'); // ADMIN
         }else if (userRole === 'student') {
           navigate('/Courses/Mycourses'); // USER
         } else {

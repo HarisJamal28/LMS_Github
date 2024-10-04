@@ -169,21 +169,21 @@ export const categoryData = [
   { title: "Cisco Certified Network Professional (CCNP)", image: "https://eduport.webestica.com/assets/images/element/coding.svg", courseCount: 10 },
 ];
 
-export const mycourses = [
-  {
-      post_url: "https://images.unsplash.com/flagged/1/apple-gear-looking-pretty.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      level: "All level",
-      title: "Sketch from A to Z",
-      description: "Proposal indulged no do sociable he throwing settling.",
-      duration: "12h 56m",
-      lectures: 15,
-  },
-  {
-      post_url: "https://plus.unsplash.com/premium_photo-1664104459156-21e2a06e7173?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      level: "Beginner",
-      title: "Introduction to JavaScript",
-      description: "JavaScript for beginners and those who want to enhance their skills.",
-      rating: 4.5,
-      duration: "10h 30m",
-      lectures: 20,
-  }]
+// export const mycourses = [
+//   {
+//       post_url: "https://images.unsplash.com/flagged/1/apple-gear-looking-pretty.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//       level: "All level",
+//       title: "Sketch from A to Z",
+//       description: "Proposal indulged no do sociable he throwing settling.",
+//       duration: "12h 56m",
+//       lectures: 15,
+//   },
+//   {
+//       post_url: "https://plus.unsplash.com/premium_photo-1664104459156-21e2a06e7173?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//       level: "Beginner",
+//       title: "Introduction to JavaScript",
+//       description: "JavaScript for beginners and those who want to enhance their skills.",
+//       rating: 4.5,
+//       duration: "10h 30m",
+//       lectures: 20,
+//   }]

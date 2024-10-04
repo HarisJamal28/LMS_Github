@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const enrolledCourseSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,

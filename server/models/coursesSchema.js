@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const courseSchema = new mongoose.Schema({
     post_url: { 
         type: String, 
-        required: true 
     },
     level: { 
         type: String, 
@@ -15,11 +14,9 @@ const courseSchema = new mongoose.Schema({
     },
     description: { 
         type: String, 
-        required: true 
     },
     rating: { 
         type: Number, 
-        required: true 
     },
     duration: { 
         type: String, 
@@ -40,7 +37,38 @@ const courseSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true
+    },
+    instructor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    featured: {
+        type: Boolean,
+        default: false
+    },
+    discountPrice: {
+        type: Number,
+        default: 0
+    },
+    discount: { 
+        type: Boolean,
+        default: false 
+    },
+    language:{
+        type: String,
+        default: 'English'
+    },
+    
+    image: Buffer,
+
+    imageContentType: String,
+
+    status: { 
+        type: String, 
+        enum: ['Pending', 'Accepted', 'Rejected'], 
+        default: 'Pending' 
     }
+
 }, { timestamps: true });
 
 const Course = mongoose.model('Course', courseSchema, 'Courses');

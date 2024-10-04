@@ -1,24 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from '../LoginRegistarationComponents/Navbar';
 import AsideBar from './AsideBar';
+import Anavbar from '../Admin/AnavBar';
+import axiosInstance from '../api/axiosConfig';
+
 
 const InstructorRequests = () => {
-  const requests = [
-    { name: 'Lori Stevens', subject: 'HTML, CSS, Bootstrap', date: '22 Oct 2021', status: 'Pending' },
-    { name: 'Carolyn Ortiz', subject: 'Photoshop, Figma, Adobe XD', date: '06 Sep 2021', status: 'Pending' },
-    { name: 'Dennis Barrett', subject: 'Javascript, Java', date: '21 Jan 2021', status: 'Accepted' },
-    { name: 'Billy Vasquez', subject: 'Maths, Chemistry', date: '25 Dec 2020', status: 'Rejected' },
-    { name: 'Jacqueline Miller', subject: 'Python, Angular, React Native', date: '05 June 2020', status: 'Accepted' },
-    { name: 'Amanda Reed', subject: 'After Effects, Premiere Pro', date: '14 Feb 2020', status: 'Accepted' },
-    { name: 'Samuel Bishop', subject: 'PHP, WordPress, Shopify', date: '06 Jan 2020', status: 'Rejected' }
-  ];
+
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axiosInstance.get('/api/courses/admin-courses');
+        setCourses(response.data);
+
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      } 
+    };
+    fetchCourses();
+  }, []);
+
+  const updateCourseStatus = async (id, newStatus) => {
+    setCourses(prevCourses => 
+        prevCourses.map(course => 
+            course.id === id ? { ...course, status: newStatus } : course
+        )
+    );
+
+    try {
+        const response = await axiosInstance.patch('/api/courses/update-status', { id, status: newStatus });
+    } catch (error) {
+        setCourses(prevCourses => 
+            prevCourses.map(course => 
+                course.id === id ? { ...course, status: 'Pending' } : course
+            )
+        );
+        console.error('Error updating course status:', error);
+    }
+};
+
+
+
+  // const requests = [
+  //   { name: 'Lori Stevens', subject: 'HTML, CSS, Bootstrap', date: '22 Oct 2021', status: 'Pending' },
+  //   { name: 'Carolyn Ortiz', subject: 'Photoshop, Figma, Adobe XD', date: '06 Sep 2021', status: 'Pending' },
+  //   { name: 'Dennis Barrett', subject: 'Javascript, Java', date: '21 Jan 2021', status: 'Accepted' },
+  //   { name: 'Billy Vasquez', subject: 'Maths, Chemistry', date: '25 Dec 2020', status: 'Rejected' },
+  //   { name: 'Jacqueline Miller', subject: 'Python, Angular, React Native', date: '05 June 2020', status: 'Accepted' },
+  //   { name: 'Amanda Reed', subject: 'After Effects, Premiere Pro', date: '14 Feb 2020', status: 'Accepted' },
+  //   { name: 'Samuel Bishop', subject: 'PHP, WordPress, Shopify', date: '06 Jan 2020', status: 'Rejected' }
+  // ];
 
   return (
     <>
-      <Navbar />
       <AsideBar />
-      <div className='Box-margin'>
+      <div className='Box-margin d-flex flex-column'>
+      <Anavbar />
+
         <div className='m-3'>
           <div className="container mt-4">
             <h2>Instructor Requests</h2>
@@ -36,7 +76,7 @@ const InstructorRequests = () => {
                 </tr>
               </thead>
               <tbody>
-                {requests.map((request, index) => (
+                {courses.map((request, index) => (
                   <tr key={index}>
                     <td>
                       <img
@@ -44,15 +84,21 @@ const InstructorRequests = () => {
                         alt="Instructor"
                         className="rounded-circle me-2"
                       />
-                      {request.name}
+                      {request.instructor}
+                      {/* {request.id} */}
                     </td>
-                    <td>{request.subject}</td>
-                    <td>{request.date}</td>
+                    <td>{request.title}</td>
+                    <td>{new Date(request.createdAt).toLocaleDateString()}</td>
                     <td>
                       {request.status === 'Pending' && (
                         <>
-                          <button className="btn btn-success btn-sm me-2">Accept</button>
-                          <button className="btn btn-danger btn-sm me-2">Reject</button>
+                          <button                             
+                          className="btn btn-success btn-sm me-2" 
+                          onClick={() => updateCourseStatus(request.id, 'Accepted')}
+                          >Accept</button>
+                          <button className="btn btn-danger btn-sm me-2"
+                          onClick={() => updateCourseStatus(request.id, 'Rejected')}
+                          >Reject</button>
                         </>
                       )}
                       {request.status === 'Accepted' && <span className="badge bg-success">Accepted</span>}

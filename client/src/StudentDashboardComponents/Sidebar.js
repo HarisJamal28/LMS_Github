@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
   const navigate = useNavigate();
-  const NavigattoDashboard = () => {
-    navigate('/dashboard');
+  const NavigattoAdmin = () => {
+    navigate('');
   };
 
   const NavigattoVideos = () => {
@@ -70,7 +70,7 @@ function Sidebar() {
         <div className="sidebar-wrapper scrollbar scrollbar-inner">
           <div className="sidebar-content">
             <ul className="nav nav-secondary   cursor-pointer">
-              <li className="nav-item  active"onClick={NavigattoDashboard}>
+              <li className="nav-item  active"onClick={NavigattoAdmin}>
                 <a  ><i className="fas fa-home " ></i><p className=''>Dashboard</p></a>
               </li>
               <li className="nav-item ">

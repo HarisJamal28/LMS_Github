@@ -1,10 +1,12 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import axiosInstance from '../api/axiosConfig';
 
 export const MyContext = createContext();
 
 export const MyProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const [courseCount, setCourseCount] = useState(0);
+    const [user, setUser] = useState(null);
 
     const addCourses = (course) => {
         setCart((prevCart) => [...prevCart, course]);
@@ -14,23 +16,24 @@ export const MyProvider = ({ children }) => {
         setCourseCount(count);
     };
 
-    const clearCart = () => {
-        setCart([]);
-        setCourseCount(0);
-    };
+    // Fetch user profile data
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await axiosInstance.get("/api/users/profile");
+                setUser(response.data.user);
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
+        };
 
-    // Debugging: Log the context values to verify they're correct
-    console.log({
-        cart,
-        courseCount,
-        addCourses,
-        updateCourseCount,
-        clearCart
-    });
+        fetchUserProfile();
+    }, []);
 
     return (
-        <MyContext.Provider value={{ cart, addCourses, updateCourseCount, clearCart, courseCount }}>
+        <MyContext.Provider value={{ cart, addCourses, updateCourseCount, courseCount, user }}>
             {children}
         </MyContext.Provider>
     );
 };
+

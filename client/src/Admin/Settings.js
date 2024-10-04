@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Nav } from 'react-bootstrap';
 import Navbar from '../LoginRegistarationComponents/Navbar';
 import AsideBar from './AsideBar';
+import Anavbar from '../Admin/AnavBar';
 
 const AdminSettings = () => {
   // State for form inputs
@@ -21,14 +22,15 @@ const AdminSettings = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Anavbar /> */}
+      {/* <Navbar /> */}
 
-      <div className="d-flex" style={{ minHeight: '100vh' }}>
+      <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
         {/* Fixed Sidebar */}
-        <AsideBar style={{ width: '250px', minHeight: '100vh', position: 'fixed', top: 0, left: 0 }} />
-
+        <AsideBar  />
+          <Anavbar style={{position: 'fixed', top: 0, right: 0 }} />
         {/* Main content area */}
-        <div className="flex-grow-1" style={{ marginLeft: '250px', padding: '20px' }}>
+        <div className="flex-grow-1" style={{ marginLeft: '250px', padding: '20px'}}>
           <Container fluid className="p-4">
             <Row>
               {/* Sidebar Navigation */}

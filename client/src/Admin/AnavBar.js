@@ -7,8 +7,8 @@ function AnavBar() {
 
   return (
     <>
-      <div class="main-panel">
-        <div class="main-header ">
+      <div class="main-panel" style={{height:'80px'}}>
+        <div class="main-header">
           <div class="main-header-logo">
             <div class="logo-header" data-background-color="dark">
               <a href="" class="logo">

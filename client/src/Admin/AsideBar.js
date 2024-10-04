@@ -1,85 +1,105 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function AsideBar() {
-  return (
-    <>
-      <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-        <div className="position-sticky pt-3">
-          <div className="sidebar-logo">
-            <div className="logo-header bg-dark text-center py-2">
-              <Link to="/" className="logo">
-                <img
-                  src="https://itsolera.com/wp-content/uploads/2024/05/IT-Solera-LOGO.png"
-                  alt="navbar brand"
-                  className="navbar-brand"
-                  width="150"
-                />
-              </Link>
-              <div className="nav-toggle d-flex justify-content-between align-items-center">
-                <button className="btn btn-toggle toggle-sidebar">
-                  <i className="gg-menu-right text-white"></i>
-                </button>
-                <button className="btn btn-toggle sidenav-toggler">
-                  <i className="gg-menu-left text-white"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+  const navigate = useNavigate();
 
-          <ul className="nav flex-column mt-4">
-            <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/Adashboard">
-                <i className="fas fa-tachometer-alt"></i> Dashboard
+  return (
+    <div className="sidebar" data-background-color="light">
+      <div className="sidebar-logo">
+        <div className="logo-header" data-background-color="dark">
+          <Link className="logo" to="/">
+            <img
+              src="https://itsolera.com/wp-content/uploads/2024/05/IT-Solera-LOGO.png"
+              alt="navbar brand"
+              className="navbar-brand"
+              width="200"
+            />
+          </Link>
+          <div className="nav-toggle">
+            <button className="btn btn-toggle toggle-sidebar">
+              <i className="gg-menu-right text"></i>
+            </button>
+            <button className="btn btn-toggle sidenav-toggler">
+              <i className="gg-menu-left"></i>
+            </button>
+          </div>
+          <button className="topbar-toggler more">
+            <i className="gg-more-vertical-alt"></i>
+          </button>
+        </div>
+      </div>
+      <div className="sidebar-wrapper scrollbar scrollbar-inner">
+        <div className="sidebar-content">
+          <ul className="nav nav-secondary cursor-pointer">
+            <li className="nav-item active">
+              <Link to="/Adashboard">
+                <i className="fas fa-home"></i>
+                <p>Dashboard</p>
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/Acourses">
-                <i className="fas fa-book"></i> Courses
+              <Link to="/Acourses">
+                <i className="fas fa-clipboard-list"></i>
+                <p>Courses</p>
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/Totalstudents">
-                <i className="fas fa-users"></i> Students
+              <Link to="/Totalstudents">
+                <i className="fas fa-users"></i>
+                <p>Students</p>
               </Link>
             </li>
             <li className="nav-item">
-              <div className="d-flex flex-column" style={{ height: "50vh", width: "150px" }}>
-                <h5 className="text-black">Instructors</h5>
-                <ul className="nav nav-pills flex-column mb-auto">
-                  <li className="nav-item">
-                    <Link to="/Idetails" className="nav-link text-grey">
-                      Instructor Detail
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/Irequest" className="nav-link text-grey d-flex justify-content-between align-items-center">
-                      Instructor Requests
-                      <span className="badge bg-success">2</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/Reviews">
-                <i className="fas fa-star"></i> Reviews
+              <Link to="#">
+                <p className='fw-bold'>Instructors</p>
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/Earnings">
-                <i className="fas fa-coins"></i> Earnings
+              <Link to="/Iregisteration">
+                <i className="fas fa-user-plus"></i>
+                <p>Instructor Registration</p>
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/Settings">
-                <i className="fas fa-cogs"></i> Admin Settings
+              <Link to="/Idetails">
+                <i className="fas fa-chalkboard-user"></i>
+                <p>Instructor Detail</p>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Irequest">
+                <i className="fas fa-users-gear"></i>
+                <p>Instructor Requests</p>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="#">
+                <p className='fw-bold'>Operations</p>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Reviews">
+                <i className="fas fa-pencil-alt"></i>
+                <p>Reviews</p>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Earnings">
+                <i className="fas fa-money-bills"></i>
+                <p>Earnings</p>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Settings">
+                <i className="fas fa-gears"></i>
+                <p>Admin Settings</p>
               </Link>
             </li>
           </ul>
         </div>
-      </nav>
-    </>
+      </div>
+    </div>
   );
 }
 

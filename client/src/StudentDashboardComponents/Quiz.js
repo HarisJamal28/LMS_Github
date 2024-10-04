@@ -9,7 +9,7 @@ function Quiz() {
           <div class="card card-round">
             <div class="card-header">
               <div class="card-head-row">
-                <div class="card-title">My Quizes</div>
+                <div class="card-title">My Quizzes</div>
                 <div class="card-tools">
                   <a
                     href="#"

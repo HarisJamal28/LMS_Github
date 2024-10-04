@@ -1,12 +1,56 @@
 import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useEffect, useState } from "react";
+import axiosInstance from '../api/axiosConfig';
+
 
 const Tdashboardpage = () => {
   const navigate = useNavigate();
+  const [totalCourses, setTotalCourses] = useState(0);
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [totalEStudents, setTotalEStudents] = useState(0);
+  const [instructorCourses, setInstructorCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingCourses, setLoadingCourses] = useState(true);
+
+  useEffect(() => {
+    const fetchTotalCourses = async () => {
+      try {
+        const response = await axiosInstance.get('/api/courses/count');
+        setTotalCourses(response.data.totalCourses);
+        setTotalStudents(response.data.totalStudents);
+        setTotalEStudents(response.data.totalEnrolled);
+      } catch (error) {
+        console.error('Error fetching total courses:', error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    const fetchInstructorCourses = async () => {
+      setLoadingCourses(true);
+      try {
+          const response = await axiosInstance.get('/api/courses/instructor-courses');
+          setInstructorCourses(response.data);
+      } catch (error) {
+          console.error('Error fetching instructor courses:', error);
+      }finally {
+        setLoadingCourses(false); // Set loading state to false after fetching
+      }
+  };
+
+  fetchTotalCourses();
+  fetchInstructorCourses();
+  }, []);
+
+  // alert(totalEStudents);
 
   return (
     <div className="Box-margin">
-      <div className="m-3">
+        <div className="m-3">
+        <br />
+        <br />
+        <br />
         <div className="container mb-3 text-end">
           <button
             type="button"
@@ -17,6 +61,15 @@ const Tdashboardpage = () => {
           </button>
         </div>
 
+      {loading ? ( 
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <>
+
         <div className="container">
           <div className="row ">
             <div className="col-sm-6 col-lg-4 ">
@@ -26,7 +79,7 @@ const Tdashboardpage = () => {
                 </span>
                 <div className="ms-4">
                   <div className="d-flex">
-                    <h5>25</h5>
+                    <h5>{totalCourses}</h5>
                   </div>
                   <span className="mb-0 h6 fw-light">Total Courses</span>
                 </div>
@@ -47,9 +100,9 @@ const Tdashboardpage = () => {
                       data-purecounter-delay="200"
                       data-purecounter-duration="0"
                     >
-                      25
+                      {totalStudents}
                     </h5>
-                    <span className="mb-0 h5">K+</span>
+                    {/* <span className="mb-0 h5">K+</span> */}
                   </div>
                   <span className="mb-0 h6 fw-light">Total Students</span>
                 </div>
@@ -70,9 +123,9 @@ const Tdashboardpage = () => {
                       data-purecounter-delay="300"
                       data-purecounter-duration="0"
                     >
-                      12
+                      {totalEStudents}
                     </h5>
-                    <span className="mb-0 h5">K</span>
+                    {/* <span className="mb-0 h5">K</span> */}
                   </div>
                   <span className="mb-0 h6 fw-light">Enrolled Students</span>
                 </div>
@@ -82,195 +135,79 @@ const Tdashboardpage = () => {
         </div>
 
         <div className="container">
-          <div class="row">
-            <div class="col-12">
-              <div className="card border bg-transparent rounded-3 mt-5">
-                <div class="card-header bg-transparent border-bottom">
-                  <div class="d-sm-flex justify-content-sm-between align-items-center">
-                    <h3 class="mb-2 mb-sm-0">Most Selling Courses</h3>
+      <div className="row">
+        <div className="col-12">
+          <div className="card border bg-transparent rounded-3 mt-5">
+            <div className="card-header bg-transparent border-bottom">
+              <div className="d-sm-flex justify-content-sm-between align-items-center">
+                <h3 className="mb-2 mb-sm-0">Most Selling Courses</h3>
+                <button type="button" className="btn btn-primary btn-sm">
+                  View all
+                </button>
+              </div>
+            </div>
 
-                    <button type="button" class="btn btn-primary btn-sm">
-                      View all
-                    </button>
-                  </div>
-                </div>
-
-                <div class="card-body">
-                  <div class="table-responsive border-0 rounded-3">
-                    <table class="table align-middle p-4 mb-0">
-                      <thead>
-                        <tr>
-                          <th
-                            scope="col"
-                            class="border-0 rounded-start bg-dark text-white"
-                          >
-                            Course Name
-                          </th>
-                          <th scope="col" class="border-0 bg-dark text-white">
-                            Selling
-                          </th>
-                          <th scope="col" class="border-0 bg-dark text-white">
-                            Amount
-                          </th>
-                          <th scope="col" class="border-0 bg-dark text-white">
-                            Period
-                          </th>
-                          <th
-                            scope="col"
-                            class="border-0 rounded-end bg-dark text-white"
-                          >
-                            Action
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              
-                              <h6 class="mb-0 ms-2 table-responsive-title">
-                                <a href="#">Application and Web Development</a>
-                              </h6>
+            <div className="card-body">
+              <div className="table-responsive border-0 rounded-3">
+              {loadingCourses ? ( // Show loader while fetching courses
+                          <div className="text-center">
+                            <div className="spinner-border" role="status">
+                              <span className="visually-hidden">Loading...</span>
                             </div>
-                          </td>
-                          <td>34</td>
-                          <td>$1,25,478</td>
-                          <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                              9 months
-                            </span>
-                          </td>
-                          <td>
-                            <a
-                              href="#"
-                              class="btn btn-sm btn-success-soft btn-round me-1 mb-0 custom-hover"
-                            >
-                              <i class="far fa-fw fa-edit"></i>
-                            </a>
-                            <button class="btn btn-sm btn-danger-soft btn-round mb-0 custom-hover1">
-                              <i class="fas fa-fw fa-times"></i>
-                            </button>
-                          </td>
-                        </tr>
+                          </div>
+                        ) : (
+                <table className="table align-middle p-4 mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col" className="border-0 rounded-start bg-dark text-white">
+                        Course Name
+                      </th>
+                      <th scope="col" className="border-0 bg-dark text-white">
+                        Selling
+                      </th>
+                      <th scope="col" className="border-0 bg-dark text-white">
+                        Amount
+                      </th>
+                      <th scope="col" className="border-0 bg-dark text-white">
+                        Period
+                      </th>
+                      <th scope="col" className="border-0 rounded-end bg-dark text-white">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {instructorCourses.map((course) => (
+                      <tr key={course._id}>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <h6 className="mb-0 ms-2 table-responsive-title">
+                              <a href="#">{course.title}</a>
+                            </h6>
+                          </div>
+                        </td>
+                        <td>{course.selling}</td> {/* Adjust if needed */}
+                        <td>${course.price}</td> {/* Adjust if needed */}
+                        <td>
+                          <span className="badge bg-primary bg-opacity-10 text-primary">
+                            {course.duration}
+                          </span>
+                        </td>
+                        <td>
+                          <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0 custom-hover">
+                            <i className="far fa-fw fa-edit"></i>
+                          </a>
+                          <button className="btn btn-sm btn-danger-soft btn-round mb-0 custom-hover1">
+                            <i className="fas fa-fw fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                  )}
+              </div>
 
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              
-                              <h6 class="mb-0 ms-2 table-responsive-title">
-                                <a href="#">Digital Marketing</a>
-                              </h6>
-                            </div>
-                          </td>
-                          <td>45</td>
-                          <td>$2,85,478</td>
-                          <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                              6 months
-                            </span>
-                          </td>
-                          <td>
-                            <a
-                              href="#"
-                              class="btn btn-sm btn-success-soft btn-round me-1 mb-0 custom-hover"
-                            >
-                              <i class="far fa-fw fa-edit"></i>
-                            </a>
-                            <button class="btn btn-sm btn-danger-soft btn-round mb-0 custom-hover1">
-                              <i class="fas fa-fw fa-times"></i>
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              
-                              <h6 class="mb-0 ms-2 table-responsive-title">
-                                <a href="#">Graphic Design </a>
-                              </h6>
-                            </div>
-                          </td>
-                          <td>21</td>
-                          <td>$85,478</td>
-                          <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                              4 months
-                            </span>
-                          </td>
-                          <td>
-                            <a
-                              href="#"
-                              class="btn btn-sm btn-success-soft btn-round me-1 mb-0 custom-hover"
-                            >
-                              <i class="far fa-fw fa-edit"></i>
-                            </a>
-                            <button class="btn btn-sm btn-danger-soft btn-round mb-0 custom-hover1">
-                              <i class="fas fa-fw fa-times"></i>
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              
-                              <h6 class="mb-0 ms-2 table-responsive-title">
-                                <a href="#">Cyber Security</a>
-                              </h6>
-                            </div>
-                          </td>
-                          <td>28</td>
-                          <td>$98,478</td>
-                          <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                              8 months
-                            </span>
-                          </td>
-                          <td>
-                            <a
-                              href="#"
-                              class="btn btn-sm btn-success-soft btn-round me-1 mb-0 custom-hover"
-                            >
-                              <i class="far fa-fw fa-edit"></i>
-                            </a>
-                            <button class="btn btn-sm btn-danger-soft btn-round mb-0 custom-hover1">
-                              <i class="fas fa-fw fa-times"></i>
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              
-                              <h6 class="mb-0 ms-2 table-responsive-title">
-                                <a href="#">Artificial Intelligence</a>
-                              </h6>
-                            </div>
-                          </td>
-                          <td>38</td>
-                          <td>$1,02,478</td>
-                          <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                              1 year
-                            </span>
-                          </td>
-                          <td>
-                            <a
-                              href="#"
-                              class="btn btn-sm btn-success-soft btn-round me-1 mb-0 custom-hover"
-                            >
-                              <i class="far fa-fw fa-edit"></i>
-                            </a>
-                            <button class="btn btn-sm btn-danger-soft btn-round mb-0 custom-hover1">
-                              <i class="fas fa-fw fa-times"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
 
                   <div class="d-sm-flex justify-content-sm-between align-items-sm-center mt-3">
                     <p class="mb-0 text-center text-sm-start">
@@ -313,8 +250,11 @@ const Tdashboardpage = () => {
             </div>
           </div>
         </div>
+        </>
+    )}
       </div>
     </div>
+    
   );
 };
 

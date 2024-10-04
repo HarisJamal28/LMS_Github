@@ -6,6 +6,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes.js');
 const coursesRoutes = require('./routes/courseRoutes.js'); 
 const enrollmentRoutes = require('./routes/enrollmentRoutes.js');
+const invoiceRoutes = require('./routes/invoiceRoutes.js');
 
 const port = process.env.PORT
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/courses', coursesRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
+app.use('/api/invoices', invoiceRoutes);
 
 app.listen(port,()=>{
     console.log(`SERVER is currently live at: http://localhost:${port}`);

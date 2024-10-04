@@ -1,7 +1,9 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AsideBar from '../Admin/AsideBar.js'; // Corrected filename case
+import AsideBar from './AsideBar';
 import Navbar from '../LoginRegistarationComponents/Navbar';
+import Anavbar from '../Admin/AnavBar';
+
 
 const supportRequests = [
   {
@@ -37,71 +39,8 @@ const supportRequests = [
 const AdminDashboard = () => {
   return (
     <>
-      <Navbar />
+      <Anavbar />
       <AsideBar /> {/* Consistent name for the sidebar */}
-      <div className="container-fluid">
-        <div className="row">
-          {/* Sidebar */}
-          <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div className="position-sticky pt-3">
-              <ul className="nav flex-column">
-                <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
-                    <i className="fas fa-tachometer-alt"></i>
-                    Dashboard
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <i className="fas fa-book"></i>
-                    Courses
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <i className="fas fa-users"></i>
-                    Students
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <div className="d-flex flex-column" style={{ height: '50vh', width: '150px' }}>
-                    <h5 className="text-black">Instructors</h5>
-                    <ul className="nav nav-pills flex-column mb-auto">
-                      <li className="nav-item">
-                        <a href="#" className="nav-link text-grey">
-                          Instructor Detail
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a href="#" className="nav-link text-grey d-flex justify-content-between align-items-center">
-                          Instructor requests
-                          <span className="badge bg-success">2</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <i className="fas fa-star"></i>
-                    Reviews
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <i className="fas fa-coins"></i>
-                    Earnings
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <i className="fas fa-cogs"></i>
-                    Admin Settings
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </nav>
 
           {/* Main Content */}
           <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -237,8 +176,6 @@ const AdminDashboard = () => {
               </div>
             </div>
           </main>
-        </div>
-      </div>
     </>
   );
 };

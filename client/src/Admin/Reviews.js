@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Card, Table, Pagination, Form, ButtonGroup, Button, Navbar as BootstrapNavbar } from 'react-bootstrap';
 import AsideBar from './AsideBar'; // Assuming this is a custom component with styles.
 import Navbar from '../LoginRegistarationComponents/Navbar'; // Your custom Navbar
+import Anavbar from '../Admin/AnavBar';
+
 
 // Dummy Data for Reviews Table
 const reviews = [
@@ -21,7 +23,7 @@ const ReviewsTable = () => {
     <Container fluid className="p-4">
       <Row>
         <Col xs={12}>
-          <h2 className="mb-4">Reviews</h2>
+          <h2 className="mb-4 text-center">Reviews</h2>
         </Col>
       </Row>
 
@@ -127,7 +129,7 @@ const StarRating = ({ rating }) => {
 const CourseTable = () => {
   return (
     <Container className="mt-5">
-      <h2 className="mb-4">Top Rated Courses</h2>
+      <h2 className="mb-4 text-center">Top Rated Courses</h2>
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -162,12 +164,15 @@ const CourseTable = () => {
 // Main Component that renders both tables
 const Main = () => {
   return (
-    <div className="d-flex" style={{ minHeight: '100vh' }}>
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+
       <AsideBar />
-      <div className="flex-grow-1 p-4" style={{ marginLeft: '250px', overflowX: 'hidden' }}>
-        <BootstrapNavbar>
-          <BootstrapNavbar.Brand href="#home">Dashboard</BootstrapNavbar.Brand>
-        </BootstrapNavbar>
+      <div className="flex-grow-1 d-flex flex-column" style={{ marginLeft: '250px', overflowX: 'hidden' }}>
+    <Anavbar />
+        
+        {/* <BootstrapNavbar>
+          {/* <BootstrapNavbar.Brand href="#home">Dashboard</BootstrapNavbar.Brand>
+        </BootstrapNavbar> */}
         <Container fluid>
           <ReviewsTable />
           <CourseTable />

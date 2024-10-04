@@ -1,8 +1,16 @@
+import React, { useEffect, useContext } from "react";
 import "../TeacherDashboardComponent/Dasboard.css";
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../api/axiosConfig';
+import { MyContext } from '../ContextApi/Context';
+
 const Tnavbar = () => {
+  const { user } = useContext(MyContext);
+  const navigate = useNavigate();
+
   return (
     <>
-      <div className="nav-margin-bottom ">
+      <div className="nav-margin-bottom">
         <div className="main-header ">
           <div className="main-header-logo">
             <div className="logo-header" data-background-color="dark">
@@ -220,15 +228,15 @@ const Tnavbar = () => {
                   >
                     <div className="avatar-sm">
                       <img
-                        src="assets/img/profile.jpg"
+                        src={"https://via.placeholder.com/80"}
                         alt="..."
                         className="avatar-img rounded-circle"
                       />
                     </div>
                     <span className="profile-username">
                       <span className="op-7">Hi,</span>
-                      <span className="fw-bold">Rehman</span>
-                    </span>
+                      <span className="fw-bold">{user ? user.name : "User"}</span>
+                      </span>
                   </a>
                   <ul className="dropdown-menu dropdown-user min-vh-25 animated fadeIn">
                     <div className="dropdown-user-scroll scrollbar-outer">
@@ -236,14 +244,14 @@ const Tnavbar = () => {
                         <div className="user-box">
                           <div className="avatar-lg">
                             <img
-                              src="assets/img/profile.jpg"
+                              src={"https://via.placeholder.com/80"}                              
                               alt="image profile"
                               className="avatar-img rounded"
                             />
                           </div>
                           <div className="u-text">
-                            <h4>Rehman</h4>
-                            <p className="text-muted">hello@example.com</p>
+                          <h4>{user ? user.name : "User"}</h4>
+                          <p className="text-muted">{user ? user.email : "email@example.com"}</p>
 
                             <a href="" className="btns btn-login  btn-view-profile">
                               View Profile
@@ -253,7 +261,10 @@ const Tnavbar = () => {
                       </li>
                       <li>
                         <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="">
+                        <a className="dropdown-item" href="#" onClick={() => {
+                          localStorage.removeItem('token');
+                          navigate('/'); // Adjust the route as needed
+                        }}>
                           Logout
                         </a>
                       </li>

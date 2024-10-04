@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Card, Table, Badge, Pagination } from 'react-bootstrap';
 import Navbar from '../LoginRegistarationComponents/Navbar';
 import AsideBar from './AsideBar';
+import Anavbar from '../Admin/AnavBar';
+
 
 const InstructorDetail = () => {
   // Dummy Data
@@ -23,13 +25,13 @@ const InstructorDetail = () => {
 
   return (
     <>
-    
-    <Navbar/>
-    <AsideBar/>
-    <div className='Box-margin'>
-<div className='m-3'>
 
-<Container fluid className="p-4">
+    <AsideBar/>
+    <div className='Box-margin d-flex flex-column'>
+    <Anavbar/>
+
+    <div className='m-3'>
+<Container fluid className="p-4 pt-0">
       <Row>
         <Col xs={12}>
           <h2>Instructor Detail</h2>

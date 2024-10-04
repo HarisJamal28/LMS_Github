@@ -41,7 +41,17 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
         default: ''
-    }
+    },
+    aboutMe: {
+        type: String,
+        default: ''
+    },
+    image: Buffer,
+
+    imageContentType: String,
+    
+    refreshToken: String
+    
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema, 'Users');

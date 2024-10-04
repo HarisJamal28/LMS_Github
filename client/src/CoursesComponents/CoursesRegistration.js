@@ -1,19 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosConfig";
 import { MyContext } from "../ContextApi/Context";
 
 function CoursesRegistration() {
   const { addCourses, updateCourseCount, courseCount } = useContext(MyContext);
   const [courses, setCourses] = useState([]);
   const [applyClass, setApplyClass] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const defaultImageUrl = '/assets/img/blogpost.jpg';
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/courses');
+        const response = await axiosInstance.get('/api/courses');
         setCourses(response.data);
       } catch (error) {
         console.error('Error fetching courses:', error);
+      }finally {
+        setLoading(false); // Hide loader after fetching
       }
     };
 
@@ -21,6 +26,7 @@ function CoursesRegistration() {
   }, []);
 
   const addCourseToCart = (selectedCourse) => {
+    console.log('Course added to cart:', selectedCourse._id);
     addCourses(selectedCourse);
     updateCourseCount(courseCount + 1);
     setApplyClass((prevState) => ({
@@ -29,18 +35,41 @@ function CoursesRegistration() {
     }));
   };
 
+  const getImageSource = (course) => {
+    if (course.post_url) {
+      return course.post_url;
+    } else if (course.image) {
+      return `data:image/png;base64,${course.image}`;
+    }
+    return defaultImageUrl;
+  };
+
   return (
-    <section className="container card-section">
+    <section style={{minHeight:'100vh'}} className="container card-section">
       <h2 className="fs-1 text-center mb-auto">Most Popular Courses</h2>
       <p className="text-center mb-4">
         Choose from hundreds of courses from specialist organizations
       </p>
 
+
+      {loading ? (
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading courses, please wait...</p>
+        </div>
+      ) : (
+
       <div className="row g-4 marginonsmallscree">
         {courses.map((e, index) => (
           <div className="col-sm-6 col-lg-4 col-xl-3" key={index}>
-            <div className="card shadow">
-              <img src={e.post_url} className="card-img-top" alt="course image" />
+            <div className="card shadow" style={{height:'420px'}}>
+            <img style={{maxHeight:'180px', objectFit:'cover'}}
+                src={getImageSource(e)} 
+                className="card-img-top" 
+                alt="course image" 
+              />
               <div className="ps-3 pt-2">
                 <div className="d-flex me-3 mb-2">
                   <a className="badge bg-info text-dark">{e.level}</a>
@@ -72,6 +101,7 @@ function CoursesRegistration() {
           </div>
         ))}
       </div>
+      )}
     </section>
   );
 }
