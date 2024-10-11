@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AsideBar from './AsideBar';
-import Navbar from '../LoginRegistarationComponents/Navbar';
 import Anavbar from '../Admin/AnavBar';
+import axiosInstance from '../api/axiosConfig';
+
+
 
 
 const supportRequests = [
@@ -37,6 +39,30 @@ const supportRequests = [
 ];
 
 const AdminDashboard = () => {
+
+  const [totalCourses, setTotalCourses] = useState(0);
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [totalInstructors, setTotalInstructors] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTotalCounts = async () => {
+      try {
+        const response = await axiosInstance.get('/api/courses/count');
+        setTotalCourses(response.data.totalCoursesALL);
+        setTotalStudents(response.data.totalStudents);
+        setTotalInstructors(response.data.totalInstructors);
+      } catch (error) {
+        console.error('Error fetching total counts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTotalCounts();
+  }, []);
+
+  
   return (
     <>
       <Anavbar />
@@ -56,64 +82,44 @@ const AdminDashboard = () => {
 
             {/* Stats */}
             <div className="row">
-              <div className="col-md-3">
-                <div className="card bg-warning text-white mb-3">
+              <div className="col-md-4">
+              <div className="row mb-12">
+              <div className="col-md-12">
+                <div className="card text-center mb-3">
                   <div className="card-body">
-                    <h2 className="card-title">1958</h2>
-                    <p className="card-text">Completed Courses</p>
+                    <h5>Total Instructors</h5>
+                    <h2>{totalInstructors}</h2>
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
-                <div className="card bg-primary text-white mb-3">
+              </div>
+              </div>
+              <div className="col-md-4">
+              <div className="row mb-12">
+              <div className="col-md-12">
+                <div className="card text-center mb-3">
                   <div className="card-body">
-                    <h2 className="card-title">1600</h2>
-                    <p className="card-text">Enrolled Courses</p>
+                    <h5>Total Students</h5>
+                    <h2>{totalStudents}</h2>
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
-                <div className="card bg-info text-white mb-3">
+              </div>
+              </div>
+              <div className="col-md-4">
+              <div className="row mb-12">
+              <div className="col-md-12">
+                <div className="card text-center mb-3">
                   <div className="card-body">
-                    <h2 className="card-title">1235</h2>
-                    <p className="card-text">Courses in Progress</p>
+                    <h5>Total Courses</h5>
+                    <h2>{totalCourses}</h2>
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
-                <div className="card bg-success text-white mb-3">
-                  <div className="card-body">
-                    <h2 className="card-title">845 hrs</h2>
-                    <p className="card-text">Total Watch Time</p>
-                  </div>
-                </div>
+              </div>
               </div>
             </div>
 
-            {/* Support Requests */}
-            <div className="card mt-4">
-              <div className="card-header d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">Support Requests</h5>
-                <a href="#" className="text-primary">View all</a>
-              </div>
-              <ul className="list-group list-group-flush">
-                {supportRequests.map((request) => (
-                  <li className="list-group-item d-flex align-items-start" key={request.id}>
-                    <img
-                      src={request.avatar}
-                      alt={`${request.name} avatar`}
-                      className="rounded-circle me-3"
-                      style={{ width: '50px', height: '50px' }}
-                    />
-                    <div>
-                      <h6 className="mb-0">{request.name}</h6>
-                      <p className="mb-1 text-muted small">{request.ticketInfo}</p>
-                      <p className="mb-0 text-muted small">{request.timeAgo}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
 
             {/* Top Instructors */}
             <div className="row mt-4">

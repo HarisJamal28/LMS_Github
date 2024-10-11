@@ -51,7 +51,8 @@ const Tdashboardpage = () => {
         <br />
         <br />
         <br />
-        <div className="container mb-3 text-end">
+        <br />
+        {/* <div className="container mb-3 text-end">
           <button
             type="button"
             className="mt-4 apply-btn btns"
@@ -59,7 +60,7 @@ const Tdashboardpage = () => {
           >
             Add Course
           </button>
-        </div>
+        </div> */}
 
       {loading ? ( 
         <div className="text-center">

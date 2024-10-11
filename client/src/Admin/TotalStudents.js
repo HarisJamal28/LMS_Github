@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ProgressBar } from 'react-bootstrap';
 import Anavbar from '../Admin/AnavBar';
 import AsideBar from './AsideBar';
-import axios from '../api/axiosConfig'; // Import your Axios instance
+import axiosInstance from '../api/axiosConfig';
+
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -13,7 +14,7 @@ const Students = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('/api/users/students'); // Fetch students from your API
+        const response = await axiosInstance.get('/api/users/students'); // Fetch students from your API
         setStudents(response.data.students); // Update state with the fetched students
       } catch (err) {
         setError(err.response ? err.response.data.message : 'Error fetching students');
@@ -25,8 +26,21 @@ const Students = () => {
     fetchStudents();
   }, []);
 
-  // if (loading) return <div>Loading...</div>;
-  // if (error) return <div className="text-danger">{error}</div>;
+  const deleteStudent = async (studentId) => {
+    if (window.confirm('Are you sure you want to delete this student?')) {
+      try {
+        await axiosInstance.delete(`/api/users/students/${studentId}`);
+        // Update the state to remove the deleted student
+        setStudents((prevStudents) => 
+          prevStudents.filter((student) => student._id !== studentId)
+        );
+        alert('Student deleted successfully');
+      } catch (err) {
+        setError(err.response ? err.response.data.message : 'Error deleting student');
+      }
+    }
+  };
+
 
   return (
     <>
@@ -83,6 +97,9 @@ const Students = () => {
                       <a href="#!" className="text-muted">
                         <i className="bi bi-three-dots"></i>
                       </a>
+                      <a href="#!" className="text-muted" onClick={() => deleteStudent(student._id)}>
+                    <i className="bi bi-trash"></i> Delete
+                  </a>
                     </div>
                   </div>
                 </div>

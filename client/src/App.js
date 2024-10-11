@@ -103,6 +103,7 @@ function App() {
           <Route path="/Earnings" element={<InvoiceDashboard />} />
           <Route path="/Settings" element={<AdminSettings />} />
           <Route path="/Totalstudents" element={<Students />} />
+          <Route path="/CreateCourse" element={<CourseDetails />} />
 
           <Route path="/*" element={<PageNotFound />} />
         </Routes>

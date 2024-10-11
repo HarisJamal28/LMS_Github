@@ -8,16 +8,20 @@ import axiosInstance from '../api/axiosConfig';
 const InstructorRequests = () => {
 
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourses = async () => {
+      setLoading(true);
       try {
         const response = await axiosInstance.get('/api/courses/admin-courses');
         setCourses(response.data);
 
       } catch (error) {
         console.error('Error fetching courses:', error);
-      } 
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
     };
     fetchCourses();
   }, []);
@@ -41,18 +45,6 @@ const InstructorRequests = () => {
     }
 };
 
-
-
-  // const requests = [
-  //   { name: 'Lori Stevens', subject: 'HTML, CSS, Bootstrap', date: '22 Oct 2021', status: 'Pending' },
-  //   { name: 'Carolyn Ortiz', subject: 'Photoshop, Figma, Adobe XD', date: '06 Sep 2021', status: 'Pending' },
-  //   { name: 'Dennis Barrett', subject: 'Javascript, Java', date: '21 Jan 2021', status: 'Accepted' },
-  //   { name: 'Billy Vasquez', subject: 'Maths, Chemistry', date: '25 Dec 2020', status: 'Rejected' },
-  //   { name: 'Jacqueline Miller', subject: 'Python, Angular, React Native', date: '05 June 2020', status: 'Accepted' },
-  //   { name: 'Amanda Reed', subject: 'After Effects, Premiere Pro', date: '14 Feb 2020', status: 'Accepted' },
-  //   { name: 'Samuel Bishop', subject: 'PHP, WordPress, Shopify', date: '06 Jan 2020', status: 'Rejected' }
-  // ];
-
   return (
     <>
       <AsideBar />
@@ -66,6 +58,15 @@ const InstructorRequests = () => {
               <input type="text" className="form-control" placeholder="Search" />
             </div>
 
+            {loading ? ( // Conditional rendering based on loading state
+              <div className="d-flex justify-content-center">
+
+                <div className="spinner-border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+
+              </div>
+            ) : (
             <table className="table table-hover">
               <thead className="thead-dark">
                 <tr>
@@ -80,12 +81,11 @@ const InstructorRequests = () => {
                   <tr key={index}>
                     <td>
                       <img
-                        src={`https://via.placeholder.com/30`} // Placeholder for image
+                        src={`https://via.placeholder.com/30`} 
                         alt="Instructor"
                         className="rounded-circle me-2"
                       />
                       {request.instructor}
-                      {/* {request.id} */}
                     </td>
                     <td>{request.title}</td>
                     <td>{new Date(request.createdAt).toLocaleDateString()}</td>
@@ -103,13 +103,12 @@ const InstructorRequests = () => {
                       )}
                       {request.status === 'Accepted' && <span className="badge bg-success">Accepted</span>}
                       {request.status === 'Rejected' && <span className="badge bg-secondary">Rejected</span>}
-                      <button className="btn btn-outline-primary btn-sm ms-2">View App</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-
+            )}
             <div className="d-flex justify-content-between">
               <span>Showing 1 to 8 of 20 entries</span>
               <nav aria-label="Page navigation example">

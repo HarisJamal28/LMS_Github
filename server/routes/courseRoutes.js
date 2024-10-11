@@ -17,11 +17,11 @@ router.patch('/update-status', updateCourseStatus);
 
 router.get('/', async (req, res) => {
   try {
-    const courses = await Course.find({ status: 'Accepted' }); // Filter by status 'Accepted'
+    const courses = await Course.find({ status: 'Accepted' });
     const formattedCourses = courses.map(course => {
       return {
         ...course.toObject(),
-        image: course.image ? course.image.toString('base64') : null // Convert Buffer to base64 string
+        image: course.image ? course.image.toString('base64') : null
       };
     });
 
@@ -92,5 +92,55 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
   }
 });
 
+
+
+// POST route to add a quiz to a course
+router.post('/:courseId/quizzes', async (req, res) => {
+  const { courseId } = req.params;
+  const { title, description, questions } = req.body;
+
+  try {
+      // Find the course by ID
+      const course = await Course.findById(courseId);
+      if (!course) {
+          return res.status(404).json({ message: 'Course not found' });
+      }
+
+      // Create a new quiz object
+      const newQuiz = {
+          title,
+          description,
+          questions,
+      };
+
+      // Add the quiz to the course's quizzes array
+      course.quizzes.push(newQuiz);
+      await course.save(); // Save the updated course document
+
+      res.status(201).json({ message: 'Quiz added successfully', quiz: newQuiz });
+  } catch (error) {
+      console.error('Error adding quiz:', error);
+      res.status(500).json({ message: 'Failed to add quiz', error });
+  }
+});
+
+router.get('/:courseId/quizzes', async (req, res) => {
+  const { courseId } = req.params;
+
+  try {
+    // Fetch the course by ID
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found.' });
+    }
+
+    // Return quizzes for the found course
+    res.status(200).json(course.quizzes);
+  } catch (error) {
+    console.error('Error fetching quizzes:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
 
 module.exports = router;

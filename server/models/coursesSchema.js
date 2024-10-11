@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const quizSchema = require('./quizSchema');
+const assignmentSchema = require('./assignmentSchema');
 
 const courseSchema = new mongoose.Schema({
     post_url: { 
@@ -67,7 +69,10 @@ const courseSchema = new mongoose.Schema({
         type: String, 
         enum: ['Pending', 'Accepted', 'Rejected'], 
         default: 'Pending' 
-    }
+    },
+
+    quizzes: [quizSchema],
+    assignments: [assignmentSchema]
 
 }, { timestamps: true });
 

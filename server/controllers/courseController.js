@@ -4,16 +4,16 @@ const Enrolled = require('../models/enrolledcoursesSchema.js')
 
 const getTotalCoursesAndStudents = async (req, res) => {
   try {
-      const [totalCourses, totalStudents, totalEnrolledUnique] = await Promise.all([
+      const [totalCourses, totalCoursesALL, totalStudents, totalInstructors] = await Promise.all([
           Course.countDocuments({ instructor: req.userId }),
+          Course.countDocuments(),
           User.countDocuments({ role: 'student' }),
-          Enrolled.distinct('userId')
-      ]);
-
+          User.countDocuments({ role: 'instructor' })
+      ]);      
+      const instructorCourses = await Course.find({ instructor: req.userId }).select('_id');
+      const totalEnrolledUnique = await Enrolled.distinct('userId', { courseId: { $in: instructorCourses } });
       const totalEnrolled = totalEnrolledUnique.length;
-      console.log(totalCourses, totalStudents, totalEnrolled )
-      
-      res.json({ totalCourses, totalStudents, totalEnrolled });
+      res.json({ totalCourses, totalCoursesALL, totalStudents, totalEnrolled, totalInstructors });
   } catch (error) {
       console.error('Error fetching total courses and students:', error);
       res.status(500).json({ message: 'Internal server error' });
@@ -61,13 +61,18 @@ const getCourseDetails = async (req, res) => {
       // Get the count of unique users enrolled in each course
       const courseData = await Promise.all(courses.map(async (course) => {
           const enrolledCount = await Enrolled.distinct('userId', { courseId: course._id });
+          const base64Image = course.image ? course.image.toString('base64') : null;
+          
           return {
               courseId: course._id,
               title: course.title,
-              imageUrl: course.imageUrl, // Add other course fields as needed
+              description: course.description,
+              imageUrl: base64Image,
               price: course.price,
               status: course.status,
-              enrolledCount: enrolledCount.length, // Count of unique users
+              lectures: course.lectures,
+              enrolledCount: enrolledCount.length,
+              quizzesCount: course.quizzes.length // Count of unique users
           };
       }));
 
@@ -103,10 +108,10 @@ const getCoursesForAdmin = async (req, res) => {
   };
 
 
-  const updateCourseStatus = async (req, res) => {
+const updateCourseStatus = async (req, res) => {
     const { id, status } = req.body;
 
-    if (!id || !['Accepted', 'Rejected'].includes(status)) {
+    if (!id || !['Accepted', 'Rejected', 'Pending'].includes(status)) {
         return res.status(400).json({ message: 'Invalid request' });
     }
 

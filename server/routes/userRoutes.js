@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const secretKey = process.env.JWT_SECRET;
-const { getStudents } = require('../controllers/userController.js');
+const { getStudents, deleteStudent } = require('../controllers/userController.js');
 
 
 const storage = multer.memoryStorage();
@@ -19,6 +19,7 @@ const router = express.Router();
 
 
 router.get('/students', authMiddleware, getStudents);
+router.delete('/students/:id', deleteStudent);
 
 
 router.post('/register', async (req, res) => {
@@ -62,6 +63,37 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     console.error('Error during USER Registeration:', error);
     res.status(400).json({ message: error.message });
+  }
+});
+
+router.post('/register-instructor', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already registered' });
+    }
+
+
+    const existingNames = await User.find({ name: { $regex: /^Temporary/ } });
+    const count = existingNames.length;
+    const newName = `Temporary${count + 1}`;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newInstructor = new User({
+      email,
+      password: hashedPassword,
+      role: 'instructor',
+      name: newName,
+    });
+
+    await newInstructor.save();
+
+    res.status(201).json({ message: 'Instructor account created successfully' });
+  } catch (error) {
+    console.error('Error during instructor registration:', error);
+    res.status(500).json({ message: 'Server error during registration' });
   }
 });
 
@@ -191,6 +223,29 @@ router.get('/users/:id', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+router.get('/instructors', authMiddleware, async (req, res) => {
+  try {
+    const instructors = await User.find({ role: 'instructor' }).select('-password'); // Exclude password
+    
+    const instructorsWithImages = instructors.map(instructor => {
+      const imageBase64 = instructor.image
+        ? `data:image/jpeg;base64,${instructor.image.toString('base64')}`
+        : null;
+        
+      return {
+        ...instructor.toObject(),
+        image: imageBase64,
+      };
+    });
+    
+    res.json(instructorsWithImages);
+  } catch (error) {
+    console.error('Error fetching instructors:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 router.post('/refresh-token', async (req, res) => {
   const { userId } = req.body; // Get userId from request body

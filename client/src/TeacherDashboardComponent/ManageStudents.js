@@ -39,7 +39,7 @@ const ManageStudents = () => {
         <br />
         <br />
             
-    <div className="col-xl-9">
+    <div className="col-xl-12">
   <div className="card border bg-transparent rounded-3">
     <div className="card-header bg-transparent border-bottom">
       <h3 className="mb-0">My Students List</h3>

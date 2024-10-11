@@ -83,13 +83,19 @@ const CourseDetails = () => {
     <>
       <Tnavbar />
       <Tsidebar />
+      <br />
+      <br />
+      <br />
+      <br />
       <div className="Box-margin">
+      <h2 className="text-center">Create a New Course</h2>
+
         <div className="m-3">
           <div className="container mt-4">
             <div className="card">
-              <div className="card-header">
+              {/* <div className="card-header">
                 <h5 className="card-title">Course details</h5>
-              </div>
+              </div> */}
               <div className="card-body">
                 <form onSubmit={handleSubmit}>
                   {/* Course Title */}
