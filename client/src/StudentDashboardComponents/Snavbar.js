@@ -8,7 +8,7 @@ function Snavbar() {
   return (
     <>
       
-        <div class="main-header ">
+        <div class="main-header main-header-sm">
           <div class="main-header-logo">
             <div class="logo-header" data-background-color="dark">
               <a href="" class="logo">
@@ -264,7 +264,10 @@ function Snavbar() {
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="">
+                        <a className="dropdown-item" href="#" onClick={() => {
+                          localStorage.removeItem('token');
+                          navigate('/');
+                        }}>
                           Logout
                         </a>
                       </li>

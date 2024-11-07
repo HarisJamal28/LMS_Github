@@ -1,291 +1,198 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import axios from "../api/axiosConfig";
+import { jwtDecode } from "jwt-decode";
 
 function Quiz() {
-  return (
-    <div class="container">
-    <div class="page-inner">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card card-round">
-            <div class="card-header">
-              <div class="card-head-row">
-                <div class="card-title">My Quizzes</div>
-                <div class="card-tools">
-                  <a
-                    href="#"
-                    class="btn btn-label-info btn-round btn-sm text-danger"
-                  >
-                    <span class="btn-label">
-                      <i class="fa fa-print text-danger"></i>
-                    </span>
-                    Print
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <div
-                class="chart-container  "
-                style={{ "min-height": "75px" }}
-              >
-                <div class="progress" style={{ "min-height": "35px" }}>
-                  <div
-                    class="progress-bar bg-success"
-                    role="progressbar"
-                    style={{
-                      width: "25%",
-                      height: "20px",
-                      margin: "10px 0px",
-                    }}
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  > Quiz 25</div>
-                 
-                </div>
-                <div class="progress" style={{ "min-height": "35px" }}>
-                  <div
-                    class="progress-bar bg-dark  "
-                    role="progressbar"
-                    style={{
-                      width: "75%",
-                      height: "20px",
-                      margin: "10px 0px",
-                    }}
-                    aria-valuenow="50"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >Projects 75%</div>
-                </div>
-                <div class="progress" style={{ "min-height": "35px" }}>
-                  <div
-                    class="progress-bar bg-warning"
-                    role="progressbar"
-                    style={{
-                      width: "50%",
-                      height: "20px",
-                      margin: "10px 0px",
-                    }}
-                    aria-valuenow="75"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >Assignments 10%</div>
-                </div>
-                <div class="progress" style={{ "min-height": "35px" }}>
-                  <div
-                    class="progress-bar bg-danger"
-                    role="progressbar"
-                    style={{
-                      width: "23%",
-                      height: "20px",
-                      margin: "10px 0px",
-                    }}
-                    aria-valuenow="100"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >Vides 23%</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-     
-      </div>
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [userAnswers, setUserAnswers] = useState({});
+  const [score, setScore] = useState(null);
 
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card card-round">
-            <div class="card-body">
-              <div class="card-head-row card-tools-still-right">
-                <div class="card-title">Messaging</div>
-                <div class="card-tools">
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-icon btn-clean me-0"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="fas fa-ellipsis-h"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" href="#">
-                        Action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-list py-4">
-                <div class="item-list">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/jm_denis.jpg"
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="info-user ms-3">
-                    <div class="username">Jimmy Denis</div>
-                    <div class="status">Graphic Designer</div>
-                  </div>
-                  <button class="btn btn-icon btn-link op-8 me-1">
-                    <i class="far fa-envelope"></i>
-                  </button>
-                  <button class="btn btn-icon btn-link btn-danger op-8">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </div>
-                <div class="item-list">
-                  <div class="avatar">
-                    <span class="avatar-title rounded-circle border border-white">
-                      CF
-                    </span>
-                  </div>
-                  <div class="info-user ms-3">
-                    <div class="username">Chandra Felix</div>
-                    <div class="status">Sales Promotion</div>
-                  </div>
-                  <button class="btn btn-icon btn-link op-8 me-1">
-                    <i class="far fa-envelope"></i>
-                  </button>
-                  <button class="btn btn-icon btn-link btn-danger op-8">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </div>
-                <div class="item-list">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/talha.jpg"
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="info-user ms-3">
-                    <div class="username">Talha</div>
-                    <div class="status">Front End Designer</div>
-                  </div>
-                  <button class="btn btn-icon btn-link op-8 me-1">
-                    <i class="far fa-envelope"></i>
-                  </button>
-                  <button class="btn btn-icon btn-link btn-danger op-8">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </div>
-                <div class="item-list">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/chadengle.jpg"
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="info-user ms-3">
-                    <div class="username">Chad</div>
-                    <div class="status">CEO Zeleaf</div>
-                  </div>
-                  <button class="btn btn-icon btn-link op-8 me-1">
-                    <i class="far fa-envelope"></i>
-                  </button>
-                  <button class="btn btn-icon btn-link btn-danger op-8">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </div>
-                <div class="item-list">
-                  <div class="avatar">
-                    <span class="avatar-title rounded-circle border border-white bg-primary">
-                      H
-                    </span>
-                  </div>
-                  <div class="info-user ms-3">
-                    <div class="username">Hizrian</div>
-                    <div class="status">Web Designer</div>
-                  </div>
-                  <button class="btn btn-icon btn-link op-8 me-1">
-                    <i class="far fa-envelope"></i>
-                  </button>
-                  <button class="btn btn-icon btn-link btn-danger op-8">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </div>
-                <div class="item-list">
-                  <div class="avatar">
-                    <span class="avatar-title rounded-circle border border-white bg-secondary">
-                      F
-                    </span>
-                  </div>
-                  <div class="info-user ms-3">
-                    <div class="username">Farrah</div>
-                    <div class="status">Marketing</div>
-                  </div>
-                  <button class="btn btn-icon btn-link op-8 me-1">
-                    <i class="far fa-envelope"></i>
-                  </button>
-                  <button class="btn btn-icon btn-link btn-danger op-8">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+  const handleShowQuizzes = (courseId) => {
+    setSelectedCourseId(selectedCourseId === courseId ? null : courseId);
+    setSelectedQuiz(null);
+    setUserAnswers({});
+    setScore(null); // Reset score when toggling courses
+  };
+
+  const handleSelectQuiz = (quiz) => {
+    setSelectedQuiz(quiz);
+    setUserAnswers({});
+    setScore(null); // Reset score for new quiz
+  };
+
+  const handleAnswerChange = (questionIndex, selectedOption) => {
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionIndex]: selectedOption,
+    }));
+  };
+
+  const handleSubmitQuiz = async () => {
+    let score = 0;
+
+    if (!selectedQuiz) return;
+
+    selectedQuiz.questions.forEach((question, index) => {
+        if (userAnswers[index] === question.correctAnswer) {
+            score++;
+        }
+    });
+
+    const totalQuestions = selectedQuiz.questions.length;
+    const percentageScore = (score / totalQuestions) * 100;
+
+    console.log("User Score:", percentageScore);
+    setScore(percentageScore);
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.userId;
+
+
+        try {
+      console.log('Submitting score:', { userId, quizId: selectedQuiz._id, score: percentageScore });            await axios.post('/api/enrollments/saveScore', {
+                userId,
+                quizId: selectedQuiz._id,
+                score: percentageScore,
+            });
+            console.log('Score saved successfully');
+            alert('QUIZ SCORE DONE')
+        } catch (error) {
+            console.error('Error saving score:', error);
+        }
+    }
+};
+
+const renderScore = () => {
+  if (score !== null) {
+    return <div className="mt-3">Your Score: {score.toFixed(2)}%</div>;
+  }
+  return null;
+};
+
+  useEffect(() => {
+    const fetchEnrolledCourses = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId;
+
+        const response = await axios.get(`/api/enrollments/withQuizzes/${userId}`);
+        setCourses(response.data.courses);
+      } catch (error) {
+        console.error('Error fetching enrolled courses:', error);
+      }
+    };
+
+    fetchEnrolledCourses();
+  }, []);
+
+  const renderQuiz = () => {
+    if (!selectedQuiz) return null;
+  
+    return (
+      <div className="col-12 card">
+        <div className="card-header">
+          <div className="card-title fs-5">{selectedQuiz.title}</div>
         </div>
-        <div class="col-md-8">
-          <div class="card card-round">
-            <div class="card-header">
-              <div class="card-head-row card-tools-still-right">
-                <div class="card-title">Messages</div>
-                <div class="card-tools">
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-icon btn-clean me-0"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="fas fa-ellipsis-h"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" href="#">
-                        Action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
+        <div className="card-body">
+          <p>{selectedQuiz.description}</p>
+          {selectedQuiz.questions.map((question, index) => (
+            <div key={index}>
+              <strong>{question.question}</strong>
+              <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
+                {question.options.map((option, i) => (
+                  <li key={i} style={{ listStyle: 'none', padding: '0', margin: '0' }}>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`question-${index}`}
+                        value={option}
+                        checked={userAnswers[index] === option}
+                        onChange={() => handleAnswerChange(index, option)}
+                        className="mr-4"
+                      />
+                      {option}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <button className="btn btn-success mt-3" onClick={handleSubmitQuiz}>
+            Submit Quiz
+          </button>
+          {renderScore()}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="container">
+      <div className="page-inner">
+        <div className="row">
+          <div className="col-md-12 d-flex justify-content-center align-items-center">
+            <div className="col-md-12">
+              <div className="card-header"></div>
+              <div className="card-body">
+                <div className="row d-flex justify-content-center align-items-center">
+                  <div className="col-md-4">
+                    {courses.length > 0 ? (
+                      courses.map(course => (
+                        <div className="card card-round m-2" key={course._id}>
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <div className="card-title fs-5">{course.title}</div>
+                            <button
+                              className="btn btn-primary mt-2"
+                              onClick={() => handleShowQuizzes(course._id)}
+                            >
+                              {selectedCourseId === course._id ? "Hide Quizzes" : "Show Quizzes"}
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            {selectedCourseId === course._id && (
+                              <div>
+                                {course.quizzes.length > 0 ? (
+                                  course.quizzes.map((quiz, index) => (
+                                    <button
+                                      key={index}
+                                      className="btn btn-secondary m-1"
+                                      onClick={() => handleSelectQuiz(quiz)}
+                                    >
+                                      {quiz.title}
+                                    </button>
+                                  ))
+                                ) : (
+                                  <p className="text-center">No Quizzes</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-center">No enrolled courses found.</p>
+                    )}
+                  </div>
+                  <div className="col-md-6 d-flex">
+                    <div className="col-md-12 d-flex justify-content-center align-items-center">
+                      {renderQuiz()}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  )
+  );
 }
 
-export default Quiz
+export default Quiz;

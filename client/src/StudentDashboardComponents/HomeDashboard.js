@@ -1,12 +1,142 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "../api/axiosConfig";
+import { jwtDecode } from "jwt-decode";
 
 function HomeDashboard() {
+  // const [courses, setCourses] = useState([]);
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [courses, setCourses] = useState([]);
+
+  const handleShowQuizzes = (courseId) => {
+    setSelectedCourseId(selectedCourseId === courseId ? null : courseId);
+  };
+
+
+  useEffect(() => {
+    const fetchEnrolledCourses = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+
+      try {
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId;
+
+        const response = await axios.get(`/api/enrollments/${userId}`);
+        setCourses(response.data.courses);
+        // alert(courses)
+        console.log("Courses set:", response.data.courses); 
+      } catch (error) {
+        console.error('Error fetching enrolled courses:', error);
+      }
+    };
+
+    fetchEnrolledCourses();
+  }, []);
+
   return (
     <div class="container">
       <div class="page-inner">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-round">
+      <div class="row">
+          <div class="col-md-12 d-flex justify-content-center align-items-center">
+            <div class="col-md-12">
+              <div class="">
+                <div class="card-head-row">
+                  <div class="card-title text-center">Your Enrolled Courses</div>
+                  <div>{courses.lectures}</div>
+                </div>
+              </div>
+              <div class="card-body">
+                  <div className="row p-3 d-flex justify-content-center align-items-center">
+                  {courses.length > 0 ? (
+                    courses.map(course => (
+                      <div className="card card-round col-md-4 m-2" key={course._id}>
+                        <div className="card-header">
+                          <div className="card-head-row">
+                            <div className="card-title fs-5">{course.title}</div>
+                          </div>
+                        </div>
+                        <div className="card-body">
+                          <div className="row">
+                            {/* <p>Instructor: {course.instructorName}</p> */}
+                            {/* <p>Progress: {course.quizScore || 0}%</p> */}
+                            <div
+                  class="chart-container  "
+                  style={{ "min-height": "75px" }}
+                >
+                  <div class="progress" style={{ "height": "15px" , "margin-bottom": "10px"}}>
+                    <div
+                      class="progress-bar bg-success"
+                      role="progressbar"
+                      style={{
+                        width: "25%",
+                       
+                    
+                      }}
+                      aria-valuenow="25"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    > Quiz 25</div>
+                   
+                  </div>
+                  <div class="progress" style={{ "height": "15px" , "margin-bottom": "10px"}}>
+                    <div
+                      class="progress-bar bg-dark  "
+                      role="progressbar"
+                      style={{
+                        width: "75%",
+                       
+                      }}
+                      aria-valuenow="50"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >Projects 75%</div>
+                  </div>
+                  <div class="progress"  style={{ "height": "15px" , "margin-bottom": "10px"}}>
+                    <div
+                      class="progress-bar bg-warning"
+                      role="progressbar"
+                      style={{
+                        width: "50%",
+                       
+                      }}
+                      aria-valuenow="75"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >Assignments 10%</div>
+                  </div>
+                  <div class="progress" style={{ "height": "15px" , "margin-bottom": "10px"}}>
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      style={{
+                        width: "23%",
+                       
+                      }}
+                      aria-valuenow="100"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >Vides 23%</div>
+                  </div>
+                </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No enrolled courses found.</p>
+                  )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+        </div>
+        {/* <div class="row">
+          <div class="col-md-12 d-flex justify-content-center align-items-center">
+            <div class="card card-round col-md-6">
               <div class="card-header">
                 <div class="card-head-row">
                   <div class="card-title">My Progress</div>
@@ -28,14 +158,14 @@ function HomeDashboard() {
                   class="chart-container  "
                   style={{ "min-height": "75px" }}
                 >
-                  <div class="progress" style={{ "min-height": "35px" }}>
+                  <div class="progress" style={{ "height": "15px" , "margin-bottom": "10px"}}>
                     <div
                       class="progress-bar bg-success"
                       role="progressbar"
                       style={{
                         width: "25%",
-                        height: "20px",
-                        margin: "10px 0px",
+                       
+                    
                       }}
                       aria-valuenow="25"
                       aria-valuemin="0"
@@ -43,42 +173,39 @@ function HomeDashboard() {
                     > Quiz 25</div>
                    
                   </div>
-                  <div class="progress" style={{ "min-height": "35px" }}>
+                  <div class="progress" style={{ "height": "15px" , "margin-bottom": "10px"}}>
                     <div
                       class="progress-bar bg-dark  "
                       role="progressbar"
                       style={{
                         width: "75%",
-                        height: "20px",
-                        margin: "10px 0px",
+                       
                       }}
                       aria-valuenow="50"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >Projects 75%</div>
                   </div>
-                  <div class="progress" style={{ "min-height": "35px" }}>
+                  <div class="progress"  style={{ "height": "15px" , "margin-bottom": "10px"}}>
                     <div
                       class="progress-bar bg-warning"
                       role="progressbar"
                       style={{
                         width: "50%",
-                        height: "20px",
-                        margin: "10px 0px",
+                       
                       }}
                       aria-valuenow="75"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >Assignments 10%</div>
                   </div>
-                  <div class="progress" style={{ "min-height": "35px" }}>
+                  <div class="progress" style={{ "height": "15px" , "margin-bottom": "10px"}}>
                     <div
-                      class="progress-bar bg-danger"
+                      class="progress-bar bg-primary"
                       role="progressbar"
                       style={{
                         width: "23%",
-                        height: "20px",
-                        margin: "10px 0px",
+                       
                       }}
                       aria-valuenow="100"
                       aria-valuemin="0"
@@ -90,9 +217,9 @@ function HomeDashboard() {
             </div>
           </div>
        
-        </div>
+        </div> */}
 
-        <div class="row">
+        <div class="row d-flex justify-content-center align-items-start">
           <div class="col-md-4">
             <div class="card card-round">
               <div class="card-body">
@@ -240,7 +367,7 @@ function HomeDashboard() {
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-4">
             <div class="card card-round">
               <div class="card-header">
                 <div class="card-head-row card-tools-still-right">
@@ -284,7 +411,7 @@ function HomeDashboard() {
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   );
 }
 

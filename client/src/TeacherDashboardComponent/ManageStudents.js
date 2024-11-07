@@ -121,7 +121,7 @@ const ManageStudents = () => {
       </div>
 
       <div className="d-sm-flex justify-content-sm-between align-items-sm-center mt-4 mt-sm-3">
-        <p className="mb-0 text-center text-sm-start">Showing 1 to 8 of 20 entries</p>
+        {/* <p className="mb-0 text-center text-sm-start">Showing 1 to 8 of 20 entries</p>
         <nav className="d-flex justify-content-center mb-0" aria-label="navigation">
           <ul className="pagination pagination-sm pagination-primary-soft d-inline-block d-md-flex rounded mb-0">
             <li className="page-item mb-0">
@@ -138,7 +138,7 @@ const ManageStudents = () => {
               </a>
             </li>
           </ul>
-        </nav>
+        </nav> */}
       </div>
     </div>
   </div>

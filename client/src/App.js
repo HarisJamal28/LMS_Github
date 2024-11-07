@@ -4,7 +4,7 @@ import { MyContext, MyProvider } from "././ContextApi/Context";
 import { useState } from "react";
 
 import Login from "./LoginRegistarationComponents/Login";
-import RegistrationPage from "./Pages/RegistrationPage";
+// import RegistrationPage from "./Pages/RegistrationPage";
 import StudentDashboardPage from "./Pages/StudentDashboardPage";
 import CoursesPage from "./Pages/CoursesPage";
 import PageNotFound from "./LoginRegistarationComponents/PageNotFound";
@@ -13,6 +13,7 @@ import CoursesRegistration from "./CoursesComponents/CoursesRegistration";
 import Invoice from "./CoursesComponents/Invoice";
 import MyCourses from "./CoursesComponents/MyCourses";
 import CourseCatagory from "./CoursesComponents/CourseCatagory";
+// Khan\Desktop\HarisProjects\ITSOLERA_LMS\learning-management-system-main\client\src\StudentDashboardComponents
 import RegisterOption from "./LoginRegistarationComponents/RegisterOption";
 import Register from "./LoginRegistarationComponents/Register";
 import Profile from "./LoginRegistarationComponents/Profile";
@@ -20,6 +21,7 @@ import ChallanDetails from "./CoursesComponents/ChallanDetails";
 import HomeDashboard from "./StudentDashboardComponents/HomeDashboard";
 import Videos from "./StudentDashboardComponents/Videos";
 import Quiz from "./StudentDashboardComponents/Quiz";
+// import Certification from "./StudentDashboardComponents/Certification";
 import Assignments from "./StudentDashboardComponents/Assignments";
 import Results from "./StudentDashboardComponents/Results";
 import Certification from './StudentDashboardComponents/Certification';
@@ -73,6 +75,7 @@ function App() {
             <Route path="ChallanDetails" element={<ChallanDetails />} />
           </Route>
           <Route path="/dashboard" element={<StudentDashboardPage />}>
+          {/* </Route> */}
             <Route index element={<HomeDashboard />} />
             <Route path="Videos" element={<Videos />} />
             <Route path="ZoomSession" element={<ZoomSession />} />

@@ -53,11 +53,11 @@ const InstructorRequests = () => {
 
         <div className='m-3'>
           <div className="container mt-4">
-            <h2>Instructor Requests</h2>
-            <div className="input-group mb-3">
+            <h2 className='text-center'>Instructor Requests</h2>
+            {/* <div className="input-group mb-3">
               <input type="text" className="form-control" placeholder="Search" />
-            </div>
-
+            </div> */}
+              <br />
             {loading ? ( // Conditional rendering based on loading state
               <div className="d-flex justify-content-center">
 
@@ -110,7 +110,7 @@ const InstructorRequests = () => {
             </table>
             )}
             <div className="d-flex justify-content-between">
-              <span>Showing 1 to 8 of 20 entries</span>
+              {/* <span>Showing 1 to 8 of 20 entries</span>
               <nav aria-label="Page navigation example">
                 <ul className="pagination">
                   <li className="page-item"><a className="page-link" href="#">Previous</a></li>
@@ -119,7 +119,7 @@ const InstructorRequests = () => {
                   <li className="page-item"><a className="page-link" href="#">3</a></li>
                   <li className="page-item"><a className="page-link" href="#">Next</a></li>
                 </ul>
-              </nav>
+              </nav> */}
             </div>
           </div>
         </div>

@@ -1,10 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+
 
 function Sidebar() {
   const navigate = useNavigate();
-  const NavigattoAdmin = () => {
-    navigate('');
+  const NavigattoDashboard = () => {
+    navigate('/dashboard');
   };
 
   const NavigattoVideos = () => {
@@ -30,14 +31,9 @@ function Sidebar() {
   const NavigattoCertification = () => {
     navigate('Certification');
   };
-  const NavigattoComunity = () => {
-    navigate('Comunity');
-  };
 
 
-
-
-
+  const location = useLocation();
 
   return (
     <>
@@ -45,14 +41,12 @@ function Sidebar() {
         <div className="sidebar-logo">
           
           <div className="logo-header" data-background-color="dark">
-            <a   className="logo">
-              <img
-                src="https://itsolera.com/wp-content/uploads/2024/05/IT-Solera-LOGO.png"
-                alt="navbar brand"
-                className="navbar-brand"
-               width="200"
-              />
-            </a>
+            <img
+              src="https://itsolera.com/wp-content/uploads/2024/05/IT-Solera-LOGO.png"
+              alt="navbar brand"
+              className="navbar-brand"
+              width="200"
+            />
             <div className="nav-toggle ">
               <button className="btn btn-toggle toggle-sidebar ">
                 <i className="gg-menu-right text"></i>
@@ -70,47 +64,58 @@ function Sidebar() {
         <div className="sidebar-wrapper scrollbar scrollbar-inner">
           <div className="sidebar-content">
             <ul className="nav nav-secondary   cursor-pointer">
-              <li className="nav-item  active"onClick={NavigattoAdmin}>
-                <a  ><i className="fas fa-home " ></i><p className=''>Dashboard</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+               <Link to="/dashboard">
+                 <i className="fas fa-home"></i>
+                 <p>Dashboard</p>
+               </Link>
               </li>
-              <li className="nav-item ">
-                <a  ><i className="fas fa-calendar"></i><p>Calendar</p></a>
-              </li>
-              <li className="nav-item ">
-                <a  ><i className="fas  fa-bullhorn"></i><p>Latest News</p></a>
-              </li>
-              <li className="nav-item ">
-                <a  ><i className="fas  fa-chalkboard-teacher"></i><p>How To Use LMS</p></a>
-              </li>
-              <li className="nav-item ">
-                <a  ><i className="fab fa-whatsapp fs-4"></i><p>Apply For Whatsapp</p></a>
-              </li>
+             
               <li className="nav-item " >
                 <a  ><p className='fw-bold'>Class Activity</p></a>
               </li>
-              <li className="nav-item " onClick={NavigattoVideos}>
-                <a  ><i className="fas fa-video " ></i><p>Pre Recorded</p></a>
+
+              <li className={`nav-item ${location.pathname === '/dashboard/Videos' ? 'active' : ''}`}>
+               <Link to="/dashboard/Videos">
+                 <i className="fas fa-video"></i>
+                 <p>Pre-Recorded</p>
+               </Link>
               </li>
-              <li className="nav-item " onClick={NavigattoZoomSession}>
-                <a  ><i className="fas fa-video "></i><p>Zoom Sessions</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard/ZoomSession' ? 'active' : ''}`}>
+               <Link to="/dashboard/ZoomSession">
+                 <i className="fas fa-video"></i>
+                 <p>Zoom Sessions</p>
+               </Link>
               </li>
-              <li className="nav-item " onClick={NavigattoQuiz}>
-                <a  ><i className="fas fa-pencil-alt "></i><p>Week Quiz</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard/Quiz' ? 'active' : ''}`}>
+               <Link to="/dashboard/Quiz">
+                 <i className="fas fa-video"></i>
+                 <p>Week Quiz</p>
+               </Link>
               </li>
-              <li className="nav-item " onClick={NavigattoAssignmnet}>
-                <a  ><i className="fas fa-clipboard-list "></i><p>Assignments</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard/Assignments' ? 'active' : ''}`}>
+               <Link to="/dashboard/Assignments">
+                 <i className="fas fa-clipboard-list"></i>
+                 <p>Assignments</p>
+               </Link>
               </li>
-              <li className="nav-item " onClick={NavigattoProject}>
-                <a  ><i className="fas fa-briefcase "></i><p>Projects</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard/Projects' ? 'active' : ''}`}>
+               <Link to="/dashboard/Projects">
+                 <i className="fas fa-briefcase"></i>
+                 <p>Projects</p>
+               </Link>
               </li>
-              <li className="nav-item " onClick={NavigattoResults}>
-                <a  ><i className="fas  fa-chart-line "></i><p>Results</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard/Results' ? 'active' : ''}`}>
+               <Link to="/dashboard/Results">
+                 <i className="fas fa-chart-line"></i>
+                 <p>Results</p>
+               </Link>
               </li>
-              <li className="nav-item " onClick={NavigattoCertification}>
-                <a  ><i className="fas fa-graduation-cap "></i><p>Certificate</p></a>
-              </li>
-              <li className="nav-item " onClick={NavigattoComunity}>
-                <a  ><i className="fas fa-comments"></i><p>Itsolera Comunity</p></a>
+              <li className={`nav-item ${location.pathname === '/dashboard/Certification' ? 'active' : ''}`}>
+               <Link to="/dashboard/Certification">
+                 <i className="fas fa-graduation-cap"></i>
+                 <p>Certficate</p>
+               </Link>
               </li>
             </ul>
           </div>

@@ -15,12 +15,9 @@ const Course = require('../models/coursesSchema'); // Adjust path for Course mod
 router.get('/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
-        // Find all enrolled courses for the user
         const enrolledCourses = await EnrolledCourse.find({ userId })
-            .populate('courseId') // Populate course details
+            .populate('courseId')
             .exec();
-
-        // Send back the populated course details
         res.json({ courses: enrolledCourses.map(enrollment => enrollment.courseId) });
     } catch (error) {
         console.error('Error fetching enrolled courses:', error);
@@ -56,5 +53,59 @@ router.get('/instructor/:instructorId/students', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+
+router.get('/withQuizzes/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const enrolledCourses = await EnrolledCourse.find({ userId })
+            .populate({
+                path: 'courseId',
+                model: 'Course',
+                populate: {
+                    path: 'quizzes' // Populate the quizzes within the Course
+                }
+            })
+            .exec();
+
+        // Map the enrolled courses to include course details
+        const coursesWithQuizzes = enrolledCourses.map(enrollment => ({
+            ...enrollment.courseId._doc, // Spread the course details
+            quizzes: enrollment.courseId.quizzes || [] // Ensure quizzes is an array
+        }));
+
+        res.json({ courses: coursesWithQuizzes });
+    } catch (error) {
+        console.error('Error fetching enrolled courses:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.post('/saveScore', async (req, res) => {
+    const { userId, quizId, score } = req.body;
+
+    try {
+        const enrolledCourse = await EnrolledCourse.findOne({ userId, 'quizzesTaken.quizId': quizId });
+
+        if (!enrolledCourse) {
+            return res.status(404).json({ message: 'Enrollment not found' });
+        }
+
+        const quizEntry = enrolledCourse.quizzesTaken.find(q => q.quizId.toString() === quizId);
+        if (quizEntry) {
+            quizEntry.score = score; // Update score
+            quizEntry.dateTaken = new Date(); // Update date
+        } else {
+            enrolledCourse.quizzesTaken.push({ quizId, score });
+        }
+
+        await enrolledCourse.save();
+        res.status(200).json({ message: 'Score saved successfully' });
+    } catch (error) {
+        console.error('Error saving score:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 module.exports = router;

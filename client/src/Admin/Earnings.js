@@ -138,11 +138,11 @@ const InvoiceDashboard = () => {
                 </tbody>
               </Table>
 
-              <Pagination className="justify-content-end">
+              {/* <Pagination className="justify-content-end">
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>
                 <Pagination.Item>3</Pagination.Item>
-              </Pagination>
+              </Pagination> */}
             </Card.Body>
           </Card>
         </Col>

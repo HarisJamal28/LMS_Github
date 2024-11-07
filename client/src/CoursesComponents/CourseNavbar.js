@@ -235,7 +235,7 @@ function Navbar() {
                     <div className="u-text">
                       <h4>{user?.name || "Guest"}</h4>
                       <p className="text-muted">{user?.email || "hello@example.com"}</p>
-                      <Link to="Userprofile">
+                      <Link to="/dashboard">
                         <a href="#" className="btns btn-login btn-view-profile">
                           View Profile
                         </a>

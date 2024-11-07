@@ -51,10 +51,11 @@ const Students = () => {
             <AsideBar />
           </div>
           <div className="col-md-8">
-            <h2>Students</h2>
-            <div className="mb-3">
+            <h2 className='text-center'>Students</h2>
+            <br />
+            {/* <div className="mb-3">
               <input type="text" className="form-control" placeholder="Search" />
-            </div>
+            </div> */}
             <div className="row">
               {students.map((student, index) => (
                 <div className="col-md-6 col-lg-4 mb-4" key={index}>
@@ -106,7 +107,7 @@ const Students = () => {
               ))}
             </div>
             {/* Pagination */}
-            <nav>
+            {/* <nav>
               <ul className="pagination justify-content-center">
                 <li className="page-item">
                   <a className="page-link" href="#!" aria-label="Previous">
@@ -128,7 +129,7 @@ const Students = () => {
                   </a>
                 </li>
               </ul>
-            </nav>
+            </nav> */}
           </div>
         </div>
       </div>

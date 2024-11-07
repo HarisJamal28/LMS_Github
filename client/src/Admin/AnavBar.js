@@ -264,7 +264,10 @@ function AnavBar() {
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="">
+                        <a className="dropdown-item" href="#" onClick={() => {
+                          localStorage.removeItem('token');
+                          navigate('/');
+                        }}>
                           Logout
                         </a>
                       </li>
